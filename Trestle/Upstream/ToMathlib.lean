@@ -111,22 +111,6 @@ theorem Fintype.elim_elems_eq_forall [Fintype V] (f : (L : List V) → _ → _ �
 
 end Quotients
 
-theorem Finset.biUnion_union [DecidableEq α] [DecidableEq β] (s1 s2 : Finset α) (f : α → Finset β)
-  : Finset.biUnion (s1 ∪ s2) f = ((Finset.biUnion s1 f) ∪ Finset.biUnion s2 f)
-  := by
-  ext b
-  simp only [mem_biUnion, mem_union]
-  constructor
-  · rintro ⟨a,b|b⟩
-    · refine Or.inl ⟨a,?_⟩
-      simp only [and_self, *]
-    · refine Or.inr ⟨a,?_⟩
-      simp only [and_self, *]
-  · rintro (⟨a,b,c⟩|⟨a,b,c⟩)
-      <;> refine ⟨a, ?_⟩
-    · simp only [and_self, true_or, *]
-    · simp only [and_self, or_true, *]
-
 def Finset.getUnique (xs : Finset α) (h : ∃ x, xs = {x}) : α :=
   xs.elim (fun L _hL =>
     match L with
@@ -218,7 +202,7 @@ def Quotient.prod (q1 : Quotient s1) (q2 : Quotient s2) : Quotient (s1.prod s2) 
       have ⟨q1,hq1⟩ := q1.exists_rep; cases hq1
       have ⟨q2,hq2⟩ := q2.exists_rep; cases hq2
       intro a b hab
-      simp [hab]
+      simp [eq]
       apply Setoid.prod.pair.mpr
       exact ⟨hab, by rfl⟩
     )
@@ -232,7 +216,7 @@ def Quotient.prod (q1 : Quotient s1) (q2 : Quotient s2) : Quotient (s1.prod s2) 
   : Quotient.prod aa bb = Quotient.mk (s := sa.prod sb) (a,b) ↔ aa = ⟦ a ⟧ ∧ bb = ⟦ b ⟧ := by
   rcases aa.exists_rep with ⟨a',rfl⟩
   rcases bb.exists_rep with ⟨b',rfl⟩
-  simp [Setoid.prod]
+  simp [eq,Setoid.prod]
 
 def Finset.mapEquiv [DecidableEq α'] (s : Finset α) (f : α ↪ α') : s ≃ s.map f where
   toFun := fun ⟨x,hx⟩ => ⟨f x, by simp [hx]⟩
@@ -341,7 +325,7 @@ theorem inf_le_iff_le_compl_sup : a ⊓ b ≤ c ↔ a ≤ bᶜ ⊔ c := by
   · intro h
     have : bᶜ ⊔ (a ⊓ b) ≤ bᶜ ⊔ c := sup_le_sup_left h bᶜ
     replace := le_trans le_sup_inf this
-    simp only [compl_sup_eq_top, ge_iff_le, le_top, inf_of_le_left, sup_le_iff, le_sup_left,
+    simp only [compl_sup_eq_top, le_top, inf_of_le_left, sup_le_iff, le_sup_left,
       true_and] at this
     exact this
   · intro h
@@ -365,5 +349,5 @@ theorem le_iff_inf_compl_eq_bot : a ≤ b ↔ a ⊓ bᶜ = ⊥ := by
 
 end BooleanAlgebra
 
-@[simp]
-theorem Function.Embedding.coe_refl {α} : ⇑(Function.Embedding.refl α) = id := rfl
+-- @[simp]
+-- theorem Function.Embedding.coe_refl {α} : ⇑(Function.Embedding.refl α) = id := rfl

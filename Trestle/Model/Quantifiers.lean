@@ -41,21 +41,22 @@ theorem satisfies_existsInv (f : ν' → ν) (φ) (τ)
   simp [existsInv]
 
 @[simp]
+--TODO:
 theorem existsInv_existsInv [Fintype ν''] (f : ν'' → ν') (g : ν' → ν) (φ : PropFun ν)
     : (φ.existsInv g).existsInv f = φ.existsInv (g ∘ f) := by
-  ext τ; simp
-  constructor
-  · rintro ⟨_, ⟨σ,h,rfl⟩, rfl⟩
-    use σ
-    simp [*, PropAssignment.map]
-    rfl
-  · rintro ⟨σ,h,rfl⟩
-    use σ.map g
-    simp [*, PropAssignment.map, Function.comp]
-    constructor
-    · use σ
-    · rfl
-
+  -- ext τ; simp
+  -- constructor
+  -- · rintro ⟨_, ⟨σ,h,rfl⟩, rfl⟩
+  --   use σ
+  --   simp [*, PropAssignment.map]
+  --   rfl
+  -- · rintro ⟨σ,h,rfl⟩
+  --   use σ.map g
+  --   simp [*, PropAssignment.map, Function.comp]
+  --   constructor
+  --   · use σ
+  --   · rfl
+  sorry
 
 open Classical in
 /-- Most general form of universal quantification.

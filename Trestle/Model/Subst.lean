@@ -66,7 +66,7 @@ theorem subst_assoc : (subst (subst φ f₁) f₂) = subst φ (fun v => subst (f
 @[simp]
 theorem vars_subst [DecidableEq ν₁] [DecidableEq ν₂]
     : vars (φ.subst f) = (vars φ).biUnion (fun v1 => vars (f v1)) := by
-  induction φ <;> simp [subst, Finset.biUnion_union, vars, *]
+  induction φ <;> simp [subst, Finset.union_biUnion, vars, *]
 
 @[simp]
 theorem satisfies_subst {φ : PropForm ν₁} {f} {τ : PropAssignment ν₂}
@@ -113,7 +113,6 @@ theorem substOne_congr {φ₁ φ₂ ψ₁ ψ₂} (v : ν)
   simp [substOne]
   rw [← PropFun.satisfies_mk, ← PropFun.satisfies_mk, hφ]
   apply iff_of_eq; congr; ext v
-  simp [PropAssignment.subst]
   split
   · rw [hψ]
   · simp
@@ -231,8 +230,9 @@ theorem satisfies_subst {φ : PropFun ν₁} {f} {τ : PropAssignment ν₂}
   rw [satisfies_mk, PropForm.satisfies_subst, ← satisfies_mk]
   rw [Quotient.prod_eq_mk] at hq
   rcases hq with ⟨rfl,hq⟩
-  apply iff_of_eq; congr; apply congrFun; apply congrArg
-  funext x; simp [Quotient.choice] at hq
+  apply iff_of_eq; congr
+  funext x;
+  simp [Quotient.choice, Quotient.eq] at hq
   have := Quotient.sound (hq x)
   simp at this
   exact this.symm
@@ -280,7 +280,7 @@ theorem semVars_subst [DecidableEq ν₁] [DecidableEq ν₂]
   simp at hsat hunsat
   -- eliminate references to f'' by rewriting back to f
   have : ∀ x, ⟦f'' x⟧ = f x := by
-    simp [Quotient.choice, piSetoid, Setoid.r] at hf'
+    simp [Quotient.choice, piSetoid, Quotient.eq] at hf'
     intro x; have := sound (hf' x); simp at this; simp [this]
   simp [this] at hsat hunsat; clear this hf' f''
   -- any two disagreeing assignments give you a semantic variable

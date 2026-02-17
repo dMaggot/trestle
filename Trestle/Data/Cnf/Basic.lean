@@ -44,7 +44,7 @@ theorem tautology_iff [DecidableEq ν] [LawfulLitVar L ν] (C : Clause L) :
     rcases C with ⟨lits⟩
     simp_all [toPropFun, Array.mem_def]
     induction lits with
-    | nil => rw [PropFun.ext_iff] at h; simp [Array.mem_def] at h
+    | nil => rw [PropFun.ext_iff] at h; simp at h
     | cons hd tl ih =>
     classical
     refine if hr : any _ = ⊤ then have := ih hr; ?_ else ?_
@@ -54,15 +54,18 @@ theorem tautology_iff [DecidableEq ν] [LawfulLitVar L ν] (C : Clause L) :
       simp at hr h
       rcases hr with ⟨τ,hr⟩
       replace h := h (τ.set (LitVar.toVar hd) (!LitVar.polarity hd))
-      simp [LitVar.satisfies_iff, Bool.not_ne_self] at h
+      simp [LitVar.satisfies_iff] at h
       rcases h with ⟨hd',hd'_mem,h⟩
       · replace hr := hr hd' hd'_mem
         simp [LitVar.satisfies_iff, PropAssignment.set] at hr h
-        use hd, List.mem_cons_self, hd', (List.mem_cons_of_mem _ hd'_mem)
+        use hd'
+        simp [hd'_mem]
+        apply Or.inl
+        symm
         split at h
         · ext
           · rw [LawfulLitVar.toVar_negate]; symm; assumption
-          · rw [LawfulLitVar.polarity_negate]; exact Bool.not_eq_eq_eq_not.mp h
+          · rw [LawfulLitVar.polarity_negate]; simp [(Bool.not_eq_eq_eq_not.mp h)]
         · exact absurd h hr
   · rintro ⟨_,hl1,l,hl2,rfl⟩
     ext τ; simp [satisfies_iff]
@@ -243,7 +246,7 @@ theorem empty_iff [DecidableEq ν] [LawfulLitVar L ν] (C : Cube L) :
     rcases C with ⟨lits⟩
     simp_all [toPropFun, Array.mem_def]
     induction lits with
-    | nil => rw [PropFun.ext_iff] at h; simp [Array.mem_def] at h
+    | nil => rw [PropFun.ext_iff] at h; simp at h
     | cons hd tl ih =>
     classical
     refine if hr : all _ = ⊥ then have := ih hr; ?_ else ?_
@@ -259,7 +262,9 @@ theorem empty_iff [DecidableEq ν] [LawfulLitVar L ν] (C : Cube L) :
       replace hr := hr hd' hd'_mem
       simp [LitVar.satisfies_iff, PropAssignment.set] at hr h
       split at h
-      · use hd, List.mem_cons_self, hd', (List.mem_cons_of_mem _ hd'_mem)
+      · use hd'; simp[hd'_mem]
+        apply Or.inl
+        symm
         ext
         · rw [LawfulLitVar.toVar_negate]; symm; assumption
         · rw [LawfulLitVar.polarity_negate, Bool.eq_not]; assumption

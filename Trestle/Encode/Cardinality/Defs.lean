@@ -41,8 +41,8 @@ abbrev lessThan (k : Nat) (lits : Multiset (Literal ν)) := cardPred lits (· < 
 
 theorem ofList_eq_map_get (L : List α)
   : Multiset.ofList L = (Finset.univ.val.map fun i => L.get i) := by
-  conv => lhs; rw [← List.finRange_map_get (l := L)]
-  simp only [List.finRange_map_get, List.get_eq_getElem,
+  conv => lhs; rw [← List.map_get_finRange (l := L)]
+  simp only [List.map_get_finRange, List.get_eq_getElem,
     Fin.univ_val_map, List.ofFn_getElem]
 
 @[simp]
@@ -78,8 +78,7 @@ theorem card_map
   simp only [card, Multiset.coe_countP, List.countP_map]
   congr
   ext l
-  simp only [Function.comp_apply, LitVar.toPropFun_map,
-    satisfies_map, decide_eq_decide]
+  simp only [Function.comp_apply, LitVar.toPropFun_map, satisfies_map]
 
 theorem card_eq_one (ls : Multiset (Literal ν)) (nodup : ls.Nodup)
   : card ls τ = 1 ↔ ∃! l ∈ ls, τ ⊨ LitVar.toPropFun l := by
@@ -100,7 +99,7 @@ theorem card_eq_one (ls : Multiset (Literal ν)) (nodup : ls.Nodup)
     if h : a = b then
       subst b; simp [a_true]; exact Multiset.count_eq_one_of_mem nodup mem
     else
-      simp [Multiset.count_singleton, Ne.symm h]
+      simp [Ne.symm h]
       intro b_true b_mem
       apply h; rw [eq_comm]; apply unique; simp [b_mem, b_true]
 

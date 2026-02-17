@@ -129,7 +129,7 @@ def amoCut4 (lits : Array (Literal ν)) (k : Nat := 3) (hk : k ≥ 2 := by decid
         rcases hτ with ⟨σ,rfl, hσ₁, hσ₂⟩
         by_cases h_tmp : σ (Sum.inr ())
         all_goals (
-          try simp only [Fin.isValue, Bool.not_eq_true] at h_tmp
+          try simp only [Bool.not_eq_true] at h_tmp
           simp [h_tmp, ← List.map_take, ← List.map_drop] at hσ₁ hσ₂
           rw [List.take_of_length_le (by simp only [List.length_drop, le_refl])] at hσ₂
           have := List.take_append_drop k list
@@ -142,7 +142,7 @@ def amoCut4 (lits : Array (Literal ν)) (k : Nat := 3) (hk : k ≥ 2 := by decid
         simp [atMost] at h_amo
         rw [← this, card_append] at h_amo
         simp at h_amo
-        simp [← List.map_take, ← List.map_drop]
+        simp [-List.map_take, -List.map_drop]
         -- CC: TODO have a `set` or `pmap` on assignments for sums
         let τ' : PropAssignment (ν ⊕ Unit) := (fun
             | Sum.inl v => τ v
@@ -150,7 +150,7 @@ def amoCut4 (lits : Array (Literal ν)) (k : Nat := 3) (hk : k ≥ 2 := by decid
         have h_eq : τ' ∘ Sum.inl = τ := rfl
         use τ'
         simp [h_eq]
-        conv => rhs; rw [List.take_of_length_le (by simp only [List.length_drop, le_refl])]
+        conv => rhs; rw [List.take_of_length_le (by simp [List.length_drop])]
         constructor <;> (simp [τ']; split <;> omega)
   )
 termination_by lits.size
