@@ -42,7 +42,7 @@ namespace Solver
 def Solutions (_f : ICnf) (_varsToBlock : List IVar) : Type := Unit
 def solutions (f vars) : Solutions f vars := ()
 
-instance [Solver m] : ForIn m (Solutions f vars) (HashAssn ILit) where
+instance [Monad m][Solver m] : ForIn m (Solutions f vars) (HashAssn ILit) where
   forIn _ b perItem := do
     let mut b := b
     let mut state := some f
