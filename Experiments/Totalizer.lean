@@ -26,35 +26,12 @@ match h:c with
       let rtot := totalizer (@Vector.mk (Literal ν) ((x :: (y :: t)).length - (x :: (y :: t)).length / 2) ⟨(x :: (y :: t)).drop ((x :: (y :: t)).length / 2)⟩ (by simp)) (Option.getD ltot.snd.snd (nextVar + c.size));
       let newVars := List.map (λ n ↦ nextVar + n) (List.range c.size);
   ⟨ltot.fst ++ rtot.fst
-++ ⟨List.flatten ((List.finRange ltot.snd.fst.size.succ).map (Fin.cases ((List.finRange rtot.snd.fst.size.succ).filterMap (Fin.cases none (λ j ↦ some #[LitVar.negate (rtot.snd.fst.get j), Literal.pos (newVars.get ⟨j.val, by next klen => simp [← Array.length_toList] at klen; simp [newVars, h, Vector.size, ← klen]; have jlt := j.prop; simp only [rtot] at jlt; trans t.length + 1 + 1 - (t.length + 1 + 1) / 2; assumption; simp⟩)]))) (λ i ↦ (List.finRange rtot.snd.fst.size.succ).map (Fin.cases (#[LitVar.negate (ltot.snd.fst.get i), Literal.pos (newVars.get ⟨i.val, by next klen => simp [← Array.length_toList] at klen; simp [newVars, h, Vector.size, ← klen]; have ilt := i.prop; simp [-Fin.is_lt, ltot] at ilt; trans (t.length + 1 + 1) / 2; assumption; omega⟩)]) (λ j ↦ #[LitVar.negate (ltot.snd.fst.get i), LitVar.negate (rtot.snd.fst.get j), Literal.pos (newVars.get ⟨(i.val + j.val).succ, by next klen => simp [newVars, h, Vector.size, ← klen]; have ilt := i.prop; simp [-Fin.is_lt, ltot, Vector.size] at ilt; have jlt := j.prop; simp [-Fin.is_lt, Vector.size, rtot] at jlt; rw [Nat.lt_iff_le_pred] at jlt; have ijlt := Nat.add_lt_add_of_lt_of_le ilt jlt; rw [← Nat.add_sub_assoc] at ijlt; simp +arith at ijlt; rw [← Nat.add_sub_assoc, Nat.add_sub_cancel_left] at ijlt; exact ijlt; omega; omega; omega⟩)])))))⟩
-++ ⟨List.flatten ((List.finRange ltot.snd.fst.size.succ).map (Fin.cases ((List.finRange rtot.snd.fst.size.succ).filterMap (Fin.cases none (λ j ↦ some #[rtot.snd.fst.get j, Literal.neg (newVars.get ⟨j.val + ltot.snd.fst.size, by next klen => simp +arith [newVars, h, Vector.size, ← klen]; have jlt := j.prop; simp +arith [ltot, Nat.lt_sub_iff_add_lt] at jlt; assumption⟩)]))) (λ i ↦ (List.finRange rtot.snd.fst.size.succ).map (Fin.cases (#[ltot.snd.fst.get i, Literal.neg (newVars.get ⟨i.val + rtot.snd.fst.size, by next klen => simp +arith [newVars, h, Vector.size, ← klen]; rw [← Nat.add_sub_assoc, Nat.sub_le_iff_le_add]; have ilt := i.prop; simp +arith [Vector.size, ltot] at ilt ⊢; assumption; omega⟩)]) (λ j ↦ #[ltot.snd.fst.get i, rtot.snd.fst.get j, Literal.neg (newVars.get ⟨i.val + j.val, by next klen => simp [newVars, h, Vector.size, ← klen]; have ilt := i.prop; simp +arith [Vector.size, ltot] at ilt; have jlt := j.prop; simp +arith [Vector.size, rtot] at jlt; have ijlt := Nat.add_lt_add_of_le_of_lt ilt jlt; rw [← Nat.add_sub_assoc, Nat.add_sub_cancel_left] at ijlt; trans t.length + 1; assumption; simp; omega⟩)])))))⟩
+++ ⟨List.flatten ((List.finRange ltot.snd.fst.size.succ).map (Fin.cases ((List.finRange rtot.snd.fst.size.succ).filterMap (Fin.cases none (λ j ↦ some #[LitVar.negate (rtot.snd.fst.get j), Literal.pos (newVars.get ⟨j.val, by next klen => simp [← Array.length_toList] at klen; simp [newVars, Vector.size, ← klen]; have jlt := j.prop; simp only [rtot] at jlt; trans t.length + 1 + 1 - (t.length + 1 + 1) / 2; assumption; simp⟩)]))) (λ i ↦ (List.finRange rtot.snd.fst.size.succ).map (Fin.cases (#[LitVar.negate (ltot.snd.fst.get i), Literal.pos (newVars.get ⟨i.val, by next klen => simp [← Array.length_toList] at klen; simp [newVars, h, Vector.size, ← klen]; have ilt := i.prop; simp [-Fin.is_lt, ltot] at ilt; trans (t.length + 1 + 1) / 2; assumption; omega⟩)]) (λ j ↦ #[LitVar.negate (ltot.snd.fst.get i), LitVar.negate (rtot.snd.fst.get j), Literal.pos (newVars.get ⟨(i.val + j.val).succ, by next klen => simp [newVars, h, Vector.size, ← klen]; have ilt := i.prop; simp [-Fin.is_lt, ltot, Vector.size] at ilt; have jlt := j.prop; simp [-Fin.is_lt, Vector.size, rtot] at jlt; rw [Nat.lt_iff_le_pred] at jlt; have ijlt := Nat.add_lt_add_of_lt_of_le ilt jlt; rw [← Nat.add_sub_assoc] at ijlt; simp +arith at ijlt; rw [← Nat.add_sub_assoc, Nat.add_sub_cancel_left] at ijlt; exact ijlt; omega; omega; omega⟩)])))))⟩
+++ ⟨List.flatten ((List.finRange ltot.snd.fst.size.succ).map (Fin.cases ((List.finRange rtot.snd.fst.size.succ).filterMap (Fin.cases none (λ j ↦ some #[rtot.snd.fst.get j, Literal.neg (newVars.get ⟨j.val + ltot.snd.fst.size, by next klen => simp +arith [newVars, h, Vector.size, ← klen]; have jlt := j.prop; simp +arith [ Nat.lt_sub_iff_add_lt] at jlt; assumption⟩)]))) (λ i ↦ (List.finRange rtot.snd.fst.size.succ).map (Fin.cases (#[ltot.snd.fst.get i, Literal.neg (newVars.get ⟨i.val + rtot.snd.fst.size, by next klen => simp +arith [newVars, h, Vector.size, ← klen]; rw [← Nat.add_sub_assoc, Nat.sub_le_iff_le_add]; have ilt := i.prop; simp +arith [Vector.size, ltot] at ilt ⊢; assumption; omega⟩)]) (λ j ↦ #[ltot.snd.fst.get i, rtot.snd.fst.get j, Literal.neg (newVars.get ⟨i.val + j.val, by next klen => simp [newVars, h, Vector.size, ← klen]; have ilt := i.prop; simp +arith [Vector.size, ltot] at ilt; have jlt := j.prop; simp +arith [Vector.size, rtot] at jlt; have ijlt := Nat.add_lt_add_of_le_of_lt ilt jlt; rw [← Nat.add_sub_assoc, Nat.add_sub_cancel_left] at ijlt; trans t.length + 1; assumption; simp; omega⟩)])))))⟩
 , ⟨@Vector.mk _ c.size ⟨newVars⟩ (by simp [newVars, -List.pure_def, -List.bind_eq_flatMap, List.size_toArray]), Option.getD rtot.snd.snd (nextVar + c.size)⟩⟩
 termination_by c.size
-decreasing_by
-next klen =>
-  simp [h, Vector.size, ← klen]
-  omega
-next klen =>
-  simp [h, Vector.size, ← klen]
-next absurd _ _ _ =>
-  simp +arith [Nat.lt_div_iff_mul_lt] at absurd
-  cases t with
-  | nil => simp +arith at absurd
-  | cons h t' => simp +arith at absurd
-next absurd _ _ _ =>
-  simp +arith [Nat.le_div_iff_mul_le] at absurd
-next absurd _ _ _ =>
-  simp +arith [Nat.lt_div_iff_mul_lt] at absurd
-  cases t with
-  | nil => simp +arith at absurd
-  | cons h t' => simp +arith at absurd
-next absurd _ _ _ =>
-  simp +arith [Nat.sub_eq_zero_iff_le, Nat.le_div_iff_mul_le] at absurd
-next absurd _ _ _ =>
-  simp +arith [Nat.lt_div_iff_mul_lt] at absurd
-  cases t with
-  | nil => simp +arith at absurd
-  | cons h t' => simp +arith at absurd
+decreasing_by all_goals grind
+
 
 -- #eval totalizer (@Vector.mk (Literal ℕ) 0 #[] (by simp)) 1
 -- #eval totalizer (@Vector.mk (Literal ℕ) 1 #[Literal.pos 1] (by simp)) 2
@@ -67,7 +44,7 @@ next absurd _ _ _ =>
 lemma totalizer_works1 : ∀ τ (a : Literal IVar) (m : IVar), let tot := totalizer (@Vector.mk (Literal IVar) 1 #[a] (by simp)) m; (∀ c ∈ tot.fst, ∃ l ∈ c, eval τ l) → card (Multiset.ofList [a]) τ = card (Multiset.ofList tot.snd.fst.toList) τ := by simp [totalizer]
 
 lemma totalizer_works2 : ∀ (τ : PropAssignment IVar) (a b : Literal IVar) (m : IVar), let tot := totalizer (@Vector.mk (Literal IVar) 2 #[a, b] (by simp)) m; (∀ c ∈ tot.fst, ∃ l ∈ c, eval τ l) → tot.snd.fst.map (λ (l : Literal IVar) ↦ eval τ l) = ⟨Array.replicate (card (Multiset.ofList [a, b]) τ) true ++ Array.replicate (2 - card (Multiset.ofList [a,b]) τ) false, by simp; rw [← Nat.add_sub_assoc]; simp; split <;> split <;> simp⟩ := by
-  simp [totalizer, Vector.size]
+  simp [totalizer, Vector.size, -Fin.exists_fin_two]
   intros τ a b m sat
   simp [Fin.exists_fin_succ] at sat
   split
@@ -87,7 +64,7 @@ lemma totalizer_works2 : ∀ (τ : PropAssignment IVar) (a b : Literal IVar) (m 
       simp [SemanticEntails.entails, satisfies] at bfalse
       simp [List.range, List.range.loop]
       have m1 := sat #[b, LitVar.mkNeg (m + 1)]
-      simp [atrue, bfalse] at m1
+      simp [bfalse] at m1
       tauto
   next afalse =>
     simp [SemanticEntails.entails, satisfies] at afalse
@@ -246,8 +223,35 @@ lemma totalizer_works : ∀ {k : ℕ} (τ : PropAssignment IVar) (l : Vector (Li
                           simp at absurd
                           cases kge absurd.left
                     | inr kltright =>
-                      -- TODO: Copy and adjust from above (or use wlog)
-                      sorry
+                      have hk : k < w.length + 1 + 1 - (w.length + 1 + 1) / 2 := by simp [card] at kltright; have klt2 := Nat.lt_of_lt_of_le kltright List.countP_le_length; simp at klt2; exact klt2
+                      have fit := sat #[-(totalizer (@Vector.mk _ ((w.length + 1 + 1) - (w.length + 1 + 1) / 2) ⟨List.drop ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp)) ((totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.snd.getD (mvar + (m + 1 + 1)))).snd.fst.get ⟨k, hk⟩, LitVar.mkPos (mvar + k)]
+                      simp at fit
+                      rw [← Bool.not_eq_true, ← Decidable.imp_iff_not_or] at fit
+                      apply fit
+                      · right; right; left
+                        use ((List.finRange ((w.length + 1 + 1) - (w.length + 1 + 1) / 2 + 1)).filterMap (Fin.cases none (λ j ↦ some #[-(totalizer (@Vector.mk _ ((w.length + 1 + 1) - (w.length + 1 + 1) / 2) ⟨List.drop ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp)) ((totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.snd.getD (mvar + (m + 1 + 1)))).snd.fst.get j, LitVar.mkPos (mvar + j.val)])))
+                        simp
+                        use ⟨k + 1, by omega⟩
+                        simp
+                      · have evalk := congr_arg (λ a ↦ Array.getD a k true) dropih
+                        simp [Array.getD] at evalk
+                        split at evalk <;> split at evalk
+                        next =>
+                          simp [Array.getElem_append] at evalk
+                          simp [Vector.get, evalk]
+                          omega
+                        next _ absurd =>
+                          rw [Nat.add_sub_cancel'] at absurd
+                          · contradiction
+                          · apply Nat.le_trans List.countP_le_length (by simp)
+                        next _ absurd =>
+                          rw [Nat.add_sub_cancel'] at absurd
+                          · contradiction
+                          · apply Nat.le_trans List.countP_le_length (by simp)
+                        next kge _ =>
+                          have absurd := Nat.lt_of_lt_of_le kltright List.countP_le_length
+                          simp at absurd
+                          cases kge absurd
                   | isFalse kge =>
                     simp at kge
                     obtain ⟨i, j, ⟨kijsucc, ⟨iltleft, jltright⟩⟩⟩ := split_sum kltcard kge.left kge.right
@@ -257,14 +261,14 @@ lemma totalizer_works : ∀ {k : ℕ} (τ : PropAssignment IVar) (l : Vector (Li
                     rw [← Bool.not_eq_true, ← Bool.not_eq_true, ← Decidable.imp_iff_not_or, ← Decidable.imp_iff_not_or] at fit
                     apply fit
                     · right; right; left
-                      use (List.finRange (w.length + 1 + 1 - (w.length + 1 + 1) / 2 + 1)).map (λ i_1 ↦ Fin.cases #[-(totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.fst.get ⟨i, sorry⟩, LitVar.mkPos (mvar + i)] (λ j ↦ #[-(totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.fst.get ⟨i, sorry⟩, -(totalizer (@Vector.mk _ ((w.length + 1 + 1) - (w.length + 1 + 1) / 2) ⟨List.drop ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp)) ((totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.snd.getD (mvar + (m + 1 + 1)))).snd.fst.get j, LitVar.mkPos (mvar + (i + j.val + 1))])
+                      use (List.finRange (w.length + 1 + 1 - (w.length + 1 + 1) / 2 + 1)).map (λ i_1 ↦ Fin.cases #[-(totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.fst.get ⟨i, by grind⟩, LitVar.mkPos (mvar + i)] (λ j ↦ #[-(totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.fst.get ⟨i, by grind⟩, -(totalizer (@Vector.mk _ ((w.length + 1 + 1) - (w.length + 1 + 1) / 2) ⟨List.drop ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp)) ((totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.snd.getD (mvar + (m + 1 + 1)))).snd.fst.get j, LitVar.mkPos (mvar + (i + j.val + 1))])
                 i_1)
                       simp
                       apply And.intro
                       · right
-                        use ⟨i, sorry⟩
+                        use ⟨i, by grind⟩
                         simp
-                      · use (⟨j, sorry⟩ : Fin _).succ
+                      · use (⟨j, by grind⟩ : Fin _).succ
                         simp
                     · have evalk := congr_arg (λ a ↦ Array.getD a i true) takeih
                       simp [Array.getD] at evalk
@@ -320,7 +324,7 @@ lemma totalizer_works : ∀ {k : ℕ} (τ : PropAssignment IVar) (l : Vector (Li
                         use ⟨a, by apply Nat.lt_of_le_of_lt _ aub; simp +arith [kadd]⟩
                       · simp
                         use (⟨b, by apply Nat.lt_of_le_of_lt _ bub; simp +arith [kadd]⟩ : Fin _).succ
-                        simp [kadd, ← Nat.add_assoc]
+                        simp [kadd]
                     · have evalk := congr_arg (λ x ↦ Array.getD x a true) takeih
                       simp [Array.getD] at evalk
                       split at evalk
@@ -387,7 +391,7 @@ lemma totalizer_works : ∀ {k : ℕ} (τ : PropAssignment IVar) (l : Vector (Li
                         split at evalk
                         next cardlt =>
                           rw [← Nat.add_sub_assoc] at evalk
-                          · simp [cardlt, ← Nat.not_le] at evalk
+                          · simp [cardlt] at evalk
                             exact evalk
                           · simp [-card_cons, card]
                             trans ((x :: y :: w).drop ((w.length + 1 + 1) / 2)).length
@@ -407,7 +411,30 @@ lemma totalizer_works : ∀ {k : ℕ} (τ : PropAssignment IVar) (l : Vector (Li
                       · exact iltjle.left
                       · assumption
                     | inr ieq =>
-                      sorry
+                      let a := card (Multiset.ofList (List.take ((w.length + 1 + 1) / 2) (x :: y :: w))) τ + i
+                      have fit := sat #[(totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.fst.get ⟨a, iltjle.left⟩, LitVar.mkNeg (mvar + (a + (totalizer (@Vector.mk _ ((w.length + 1 + 1) - (w.length + 1 + 1) / 2) ⟨List.drop ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp)) ((totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.snd.getD (mvar + (m + 1 + 1)))).snd.fst.size))]
+                      simp [← kij, ieq, Vector.size] at fit ⊢
+                      rw [← Bool.not_eq_false, ← Decidable.imp_iff_not_or] at fit
+                      apply fit
+                      · right; right; right
+                        use List.map (λ i_1 ↦ Fin.cases #[(totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.fst.get ⟨a, iltjle.left⟩, LitVar.mkNeg (mvar + (a + (w.length + 1 + 1 - (w.length + 1 + 1) / 2)))] (λ j ↦ #[(totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.fst.get ⟨a, iltjle.left⟩, (totalizer (@Vector.mk _ ((w.length + 1 + 1) - (w.length + 1 + 1) / 2) ⟨List.drop ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp)) ((totalizer (@Vector.mk _ ((w.length + 1 + 1) / 2) ⟨List.take ((w.length + 1 + 1) / 2) (x :: y :: w)⟩ (by simp; omega)) (mvar + (m + 1 + 1))).snd.snd.getD (mvar + (m + 1 + 1)))).snd.fst.get j, LitVar.mkNeg (mvar + (a + j.val))]) i_1) (List.finRange (w.length + 1 + 1 - (w.length + 1 + 1) / 2 + 1))
+                        simp
+                        apply And.intro
+                        · right
+                          use ⟨a, iltjle.left⟩
+                          simp
+                        · use 0
+                          simp
+                      · have evalk := congr_arg (λ z ↦ Array.getD z a true) takeih
+                        simp [ -add_lt_add_iff_left, -Nat.add_lt_add_iff_left, Array.getD, Array.getElem_append] at evalk
+                        split at evalk
+                        next cardlt =>
+                          simp[Vector.get, evalk]
+                          grind
+                        next _ cardge =>
+                          rw [Nat.not_lt] at cardge
+                          have absurd : (w.length + 1 + 1) / 2 < (w.length + 1 + 1) / 2 := Nat.lt_of_le_of_lt (Nat.le_trans cardge (by omega)) iltjle.left
+                          simp at absurd
 
 #eval Solver.Dimacs.printRichCnf IO.print ((((LawfulState.new ⟨5, by simp⟩ ⟨λ u : Fin 3 ↦ ⟨u.val.succ, by simp⟩, by intro a b; simp; rw [Subtype.mk_eq_mk]; simp [Fin.val_inj]⟩ (by intro v; simp; unfold LT.lt IVar.instLT; simp only [OfNat.ofNat]; trans (3 + 1); rw [Nat.add_one_lt_add_one_iff]; exact v.prop; simp) []).addClause #[Literal.pos 1, Literal.neg 2]).addClause #[Literal.neg 1, Literal.pos 2]).addClause #[Literal.neg 10, Literal.pos 19]).cnf
 #eval (LawfulState.new ⟨5, by simp⟩ ⟨λ u : Fin 3 ↦ ⟨u.val.succ, by simp⟩, by intro a b; simp; rw [Subtype.mk_eq_mk]; simp [Fin.val_inj]⟩ (by intro v; simp; unfold LT.lt IVar.instLT; simp only [OfNat.ofNat]; trans (3 + 1); rw [Nat.add_one_lt_add_one_iff]; exact v.prop; simp) []).nextVar
