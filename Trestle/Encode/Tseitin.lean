@@ -158,7 +158,7 @@ def toPropFun_all_conjuncts : (f : NegNormForm ν) → toPropFun (.all (conjunct
 | lit l => by simp [conjuncts, toPropFun, Array.attach, PropFun.all]
 | all as => by
   have IH : ∀ a ∈ as, _ := fun a _h => toPropFun_all_conjuncts a
-  rcases as with ⟨as⟩; simp only [Array.mem_toArray] at IH
+  rcases as with ⟨as⟩; simp only [List.mem_toArray] at IH
   ext τ
   replace IH := open PropFun in fun a ha => congrArg (τ ⊨ ·) (IH a ha).symm
   simp [conjuncts, toPropFun, List.unattach, -List.map_subtype] at IH ⊢
@@ -168,10 +168,10 @@ def toPropFun_all_conjuncts : (f : NegNormForm ν) → toPropFun (.all (conjunct
   lift_lets; intro disj
   have : toPropFun (any disj) = toPropFun (any as) := by
     have IH : ∀ a ∈ as, _ := fun a _h => toPropFun_any_disjuncts a
-    rcases as with ⟨as⟩; simp only [Array.mem_toArray] at IH
+    rcases as with ⟨as⟩; simp only [List.mem_toArray] at IH
     ext τ
     replace IH := open PropFun in fun a ha => congrArg (τ ⊨ ·) (IH a ha).symm
-    simp [disj, disjuncts, toPropFun, List.unattach, -List.map_subtype] at IH ⊢
+    simp [disj, toPropFun, List.unattach, -List.map_subtype] at IH ⊢
     aesop
   rw [← this]; clear this
   ext τ
@@ -186,7 +186,7 @@ def toPropFun_any_disjuncts : (f : NegNormForm ν) → toPropFun (.any (disjunct
 | lit l => by simp [disjuncts, toPropFun, Array.attach, PropFun.any]
 | any as => by
   have IH : ∀ a ∈ as, _ := fun a _h => toPropFun_any_disjuncts a
-  rcases as with ⟨as⟩; simp only [Array.mem_toArray] at IH
+  rcases as with ⟨as⟩; simp only [List.mem_toArray] at IH
   ext τ
   replace IH := open PropFun in fun a ha => congrArg (τ ⊨ ·) (IH a ha).symm
   simp [disjuncts, toPropFun, List.unattach, -List.map_subtype] at IH ⊢
@@ -196,10 +196,10 @@ def toPropFun_any_disjuncts : (f : NegNormForm ν) → toPropFun (.any (disjunct
   lift_lets; intro conj
   have : toPropFun (all conj) = toPropFun (all as) := by
     have IH : ∀ a ∈ as, _ := fun a _h => toPropFun_all_conjuncts a
-    rcases as with ⟨as⟩; simp only [Array.mem_toArray] at IH
+    rcases as with ⟨as⟩; simp only [List.mem_toArray] at IH
     ext τ
     replace IH := open PropFun in fun a ha => congrArg (τ ⊨ ·) (IH a ha).symm
-    simp [conj, conjuncts, toPropFun, List.unattach, -List.map_subtype] at IH ⊢
+    simp [conj, toPropFun, List.unattach, -List.map_subtype] at IH ⊢
     aesop
   rw [← this]; clear this
   ext τ
@@ -382,7 +382,7 @@ def encodeNNF
             rcases this with ⟨i,hi,this⟩
             use Literal.pos (Sum.inr ⟨i,hi⟩)
             constructor
-            · right; simp [Array.mem_def, List.mem_ofFn]
+            · right; simp
             · simp +zetaDelta [this, h]
       )
 termination_by sizeOf f
