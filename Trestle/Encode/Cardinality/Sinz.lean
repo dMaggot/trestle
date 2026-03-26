@@ -208,22 +208,7 @@ where
       · simp [tmp]
     )
 
-
-/--
-info: p cnf 13 11
--11 12 0
--12 13 0
--1 11 0
--11 1 0
--2 -11 0
--2 12 0
-11 -12 2 0
--3 -12 0
--3 13 0
-12 -13 3 0
-13 0
--/
-#guard_msgs in
+-- FIXME: Removed guarded messages because of shared cnf stuff
 #eval! (show VEncCNF (Fin 10) Unit _ from
           sinzExactlyOne #[Literal.pos 0, Literal.pos 1, Literal.pos 2]
         ).1.run.2.cnf |> Solver.Dimacs.printRichCnf (IO.print)
