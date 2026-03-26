@@ -99,7 +99,8 @@ theorem toPropFun_ofPropForm (f : PropForm ν)
 
 -- compactify formulas by merging nested conjunctions and disjunctions
 mutual
-def conjuncts : NegNormForm ν → Array (NegNormForm ν)
+def conjuncts (x : NegNormForm ν) : Array (NegNormForm ν) :=
+match x with
 | lit l => #[.lit l]
 | all as => as.attach.flatMap (fun ⟨a,_h⟩ => conjuncts a)
 | any as =>
@@ -108,8 +109,23 @@ def conjuncts : NegNormForm ν → Array (NegNormForm ν)
     #[disj[0]]
   else
     #[.any disj]
+termination_by sizeOf x
+decreasing_by
+  all_goals try {
+    simp
+    next _x =>
+      trans sizeOf as
+      · exact Array.sizeOf_lt_of_mem _x.2
+      · simp +arith
+  }
+  all_goals try {
+    trans sizeOf as
+    · exact Array.sizeOf_lt_of_mem _h
+    · simp +arith
+  }
 
-def disjuncts : NegNormForm ν → Array (NegNormForm ν)
+def disjuncts (x : NegNormForm ν) : Array (NegNormForm ν) :=
+match x with
 | lit l => #[.lit l]
 | any as => as.attach.flatMap (fun ⟨a,_h⟩ => disjuncts a)
 | all as =>
@@ -118,6 +134,21 @@ def disjuncts : NegNormForm ν → Array (NegNormForm ν)
     #[conj[0]]
   else
     #[.all <| conj]
+termination_by sizeOf x
+decreasing_by
+  all_goals try {
+    simp
+    next _x =>
+      trans sizeOf as
+      · exact Array.sizeOf_lt_of_mem _x.2
+      · simp +arith
+  }
+  all_goals try {
+    trans sizeOf as
+    · exact Array.sizeOf_lt_of_mem _h
+    · simp +arith
+  }
+
 end
 
 set_option maxHeartbeats 500000 in
