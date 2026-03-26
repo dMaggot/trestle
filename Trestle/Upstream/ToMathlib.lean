@@ -305,9 +305,9 @@ theorem Fintype.invFun_eq_invFun [Fintype α] [DecidableEq α'] (f f' : α ↪ �
   | ⟨_+1,_⟩ => simp
 
 @[simp] theorem Array.finRange_data (n) : (Array.finRange n).toList = List.finRange n := by
-  induction n with
+  cases n with
   | zero => rfl
-  | succ n ih => simp [Array.finRange, List.finRange, ih]
+  | succ n => simp [Array.finRange, List.finRange]
 
 @[simp] theorem top : ⊤ := by trivial
 
